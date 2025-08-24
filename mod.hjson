@@ -1,0 +1,8 @@
+name: "mindustry-fp-mod"
+displayName: "Firepup's Mindustry Mod"
+author: "Firepup Sixfifty"
+description: "stuff I wanted"
+version: "1.0"
+minGameVersion: "150.1"
+dependencies: [ ]
+hidden: false
