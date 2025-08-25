@@ -23,10 +23,8 @@ function keysFromValue(map, value) {
 let debug = false;
 let playerUnits = new ObjectMap();
 
-// iOS fix
-
-function loopLogic() {
-    try {
+if (!Vars.ios) {
+    Time.runTask(0.1, function unitLoop() {
         let cache = Groups.player;
         let hasNull = cache.contains(p => p.unit() == null)
         if (hasNull) {
@@ -35,37 +33,26 @@ function loopLogic() {
             playerUnits.clear();
             cache.each(p => playerUnits.put(p, p.unit()))
         }
-    } catch (err) {
-        if (err instanceof TypeError || e instanceof InternalError) print("Hey iOS, what the heck", err.message);
-        else throw err;
-    }
+        Time.runTask(0.1, unitLoop);
+    });
+
+
+    Events.on(UnitDestroyEvent, event => {
+        print("SOMETHING DIED YAY!");
+        const u = event.unit;
+        if (debug) {
+            print("Player units right now:");
+            Groups.player.each(p => print(p + "->" + p.unit()));
+            print("Player units in cache:");
+            playerUnits.each((p, unit) => print(p + "->" + unit));
+            print("The dead unit:")
+            print(u);
+        }
+        const icon = new TextureRegionDrawable(u.type.uiIcon);
+        const wasPlayer = valuesContains(playerUnits, u);
+        if (u.isPlayer() || wasPlayer) {
+            Vars.ui.hudfrag.showToast(icon, "<-- This unit was killed while being controlled by " + keysFromValue(playerUnits, u)[0].name + " :3");
+        }
+    });
 }
-
-function unitLoop() {
-    loopLogic();
-    Time.runTask(0.1, unitLoop);
-}
-
-// end iOS fix
-
-Time.runTask(0.1, unitLoop);
-
-Events.on(UnitDestroyEvent, event => {
-    print("SOMETHING DIED YAY!");
-    const u = event.unit;
-    if (debug) {
-        print("Player units right now:");
-        Groups.player.each(p => print(p + "->" + p.unit()));
-        print("Player units in cache:");
-        playerUnits.each((p, unit) => print(p + "->" + unit));
-        print("The dead unit:")
-        print(u);
-    }
-    const icon = new TextureRegionDrawable(u.type.uiIcon);
-    const wasPlayer = valuesContains(playerUnits, u);
-    if (u.isPlayer() || wasPlayer) {
-        Vars.ui.hudfrag.showToast(icon, "<-- This unit was killed while being controlled by " + keysFromValue(playerUnits, u)[0].name + " :3");
-    }
-});
-
 if (debug) print("main.js done loading");
