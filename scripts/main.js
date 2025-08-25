@@ -20,10 +20,7 @@ function keysFromValue(map, value) {
 
 // Main stuff
 
-let debug = false;
-let playerUnits = new ObjectMap();
-
-Time.runTask(0.1, function unitLoop() {
+function loopLogic() {
     let cache = Groups.player;
     let hasNull = cache.contains(p => p.unit() == null)
     if (hasNull) {
@@ -32,6 +29,13 @@ Time.runTask(0.1, function unitLoop() {
         playerUnits.clear();
         cache.each(p => playerUnits.put(p, p.unit()))
     }
+}
+
+let debug = false;
+let playerUnits = new ObjectMap();
+
+Time.runTask(0.1, function unitLoop() {
+    loopLogic(); // this might fix an iOS crash issue???
     Time.runTask(0.1, unitLoop);
 });
 
