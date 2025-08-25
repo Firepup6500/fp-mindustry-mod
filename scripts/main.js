@@ -20,6 +20,7 @@ function keysFromValue(map, value) {
 
 // Main stuff
 
+let debug = false;
 let playerUnits = new ObjectMap();
 
 Time.runTask(0.1, function unitLoop() {
@@ -36,13 +37,15 @@ Time.runTask(0.1, function unitLoop() {
 
 Events.on(UnitDestroyEvent, event => {
     print("SOMETHING DIED YAY!");
-    print("Player units right now:");
-    Groups.player.each(p => print(p + "->" + p.unit()));
-    print("Player units in cache:");
-    playerUnits.each((p, unit) => print(p + "->" + unit));
-    print("The dead unit:")
     const u = event.unit;
-    print(u);
+    if (debug) {
+        print("Player units right now:");
+        Groups.player.each(p => print(p + "->" + p.unit()));
+        print("Player units in cache:");
+        playerUnits.each((p, unit) => print(p + "->" + unit));
+        print("The dead unit:")
+        print(u);
+    }
     const icon = new TextureRegionDrawable(u.type.uiIcon);
     const wasPlayer = valuesContains(playerUnits, u);
     if (u.isPlayer() || wasPlayer) {
@@ -50,4 +53,4 @@ Events.on(UnitDestroyEvent, event => {
     }
 });
 
-print("main.js done loading");
+if (debug) print("main.js done loading");
