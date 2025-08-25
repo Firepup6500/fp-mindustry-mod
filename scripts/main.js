@@ -25,19 +25,20 @@ let playerUnits = new ObjectMap();
 
 // iOS fix
 
-function isNullUnit(p) {
-    const u = p.unit;
-    return u == null;
-}
-
 function loopLogic() {
-    let cache = Groups.player;
-    let hasNull = cache.contains(isNullUnit)
-    if (hasNull) {
-        cache.each(p => !!p.unit() && playerUnits.put(p, p.unit()));
-    } else {
-        playerUnits.clear();
-        cache.each(p => playerUnits.put(p, p.unit()))
+    try {
+        let cache = Groups.player;
+        let hasNull = cache.contains(p => p.unit() == null)
+        if (hasNull) {
+            cache.each(p => !!p.unit() && playerUnits.put(p, p.unit()));
+        } else {
+            playerUnits.clear();
+            cache.each(p => playerUnits.put(p, p.unit()))
+        }
+    } catch (err) {
+        if (err instanceof TypeError) {
+            print("Hey iOS, what the heck", err.message);
+        } else throw err;
     }
 }
 
