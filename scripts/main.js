@@ -20,6 +20,10 @@ function keysFromValue(map, value) {
 
 // Main stuff
 
+let debug = false;
+let playerUnits = new ObjectMap();
+
+// iOS fix
 function loopLogic() {
     let cache = Groups.player;
     let hasNull = cache.contains(p => p.unit() == null)
@@ -31,13 +35,14 @@ function loopLogic() {
     }
 }
 
-let debug = false;
-let playerUnits = new ObjectMap();
-
-Time.runTask(0.1, function unitLoop() {
-    loopLogic(); // this might fix an iOS crash issue???
+function unitLoop() {
+    loopLogic();
     Time.runTask(0.1, unitLoop);
-});
+}
+
+// end iOS fix
+
+Time.runTask(0.1, unitLoop);
 
 Events.on(UnitDestroyEvent, event => {
     print("SOMETHING DIED YAY!");
