@@ -36,7 +36,7 @@ function loopLogic() {
             cache.each(p => playerUnits.put(p, p.unit()))
         }
     } catch (err) {
-        if (err instanceof TypeError) {
+        if (err instanceof InternalError) {
             print("Hey iOS, what the heck", err.message);
         } else throw err;
     }
