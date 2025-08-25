@@ -26,7 +26,8 @@ let playerUnits = new ObjectMap();
 // iOS fix
 
 function isNullUnit(p) {
-    return p.unit == null;
+    const u = p.unit;
+    return u == null;
 }
 
 function loopLogic() {
