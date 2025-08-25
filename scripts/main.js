@@ -24,9 +24,14 @@ let debug = false;
 let playerUnits = new ObjectMap();
 
 // iOS fix
+
+function isNullUnit(p) {
+    return p.unit == null;
+}
+
 function loopLogic() {
     let cache = Groups.player;
-    let hasNull = cache.contains(p => p.unit() == null)
+    let hasNull = cache.contains(isNullUnit)
     if (hasNull) {
         cache.each(p => !!p.unit() && playerUnits.put(p, p.unit()));
     } else {
