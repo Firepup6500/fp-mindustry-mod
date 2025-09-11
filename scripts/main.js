@@ -48,6 +48,7 @@ if (!Vars.ios) {
             print("The dead unit:")
             print(u);
         }
+		if (!u.type.uiIcon) return;
         const icon = new TextureRegionDrawable(u.type.uiIcon);
         const wasPlayer = valuesContains(playerUnits, u);
         if (u.isPlayer() || wasPlayer) {
