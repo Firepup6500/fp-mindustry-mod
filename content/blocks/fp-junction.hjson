@@ -1,0 +1,9 @@
+type: Junction
+name: Speedy junction
+description: VROOM
+requirements: [
+  copper/15
+]
+category: distribution
+speed: 1000
+displayedSpeed: 0
