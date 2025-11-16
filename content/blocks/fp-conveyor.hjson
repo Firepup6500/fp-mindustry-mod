@@ -6,3 +6,5 @@ requirements: [
 ]
 category: distribution
 speed: 1000
+displayedSpeed: 0
+pushUnits: false
