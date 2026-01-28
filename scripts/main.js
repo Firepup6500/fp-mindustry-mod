@@ -38,7 +38,7 @@ if (!Vars.ios) {
 
 
     Events.on(UnitDestroyEvent, event => {
-        print("SOMETHING DIED YAY!");
+        if (debug) print("SOMETHING DIED YAY!");
         const u = event.unit;
         if (debug) {
             print("Player units right now:");
